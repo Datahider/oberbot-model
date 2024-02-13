@@ -1,0 +1,23 @@
+{
+    "name": "vendor/oberbot-model",
+    "description": "Description of project Oberbot-Model.",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Petros Ioannidis",
+            "email": "pio@pio.su"
+        }
+    ],
+    "require": {
+        "losthost/db": "^3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "10.5.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "losthost\\OberbotModel\\": "src/",
+            "losthost\\OberbotModel\\Test\\": "test/"
+        }
+    }
+}
