@@ -1,6 +1,6 @@
 <?php
 
-define('PRODUCTION_DB', true);
+define('PRODUCTION_DB', false);
 
 use losthost\DB\DB;
 
@@ -21,4 +21,8 @@ if (PRODUCTION_DB) {
 require_once 'db_pass.php';
 
 DB::connect(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PREF);
+
+if (!PRODUCTION_DB) {
+    DB::dropAllTables(true, true);
+}
 
