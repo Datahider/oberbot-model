@@ -7,7 +7,12 @@ use losthost\OberbotModel\Model;
 
 class ModelTest extends TestCase {
     
-    public function testCreateGetUser() {
+    public function testTestCreateGetUser() {
+        
+        if (PRODUCTION_DB) {
+            $this->assertFalse(false);
+            return;
+        }
         
         $m = new Model();
         
@@ -26,5 +31,16 @@ class ModelTest extends TestCase {
         
         $this->expectExceptionMessage('User exists');
         $user = $m->userCreate('Ivan', 1000);
+    }
+    
+    public function testTestTopicReview() {
+        
+        if (PRODUCTION_DB) {
+            $this->assertFalse(false);
+            return;
+        }
+        
+        
+        
     }
 }

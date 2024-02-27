@@ -8,8 +8,11 @@ use losthost\OberbotModel\data\topic;
 use losthost\OberbotModel\data\topic_admin;
 use losthost\OberbotModel\data\topic_user;
 use losthost\OberbotModel\data\user;
+use losthost\OberbotModel\data\department;
+use losthost\OberbotModel\data\customer;
 
 use losthost\DB\DBList;
+use losthost\DB\DBView;
 
 class Model {
 
@@ -20,6 +23,8 @@ class Model {
         topic_admin::initDataStructure();
         topic_user::initDataStructure();
         user::initDataStructure();
+        department::initDataStructure();
+        customer::initDataStructure();
     }
     
     public function userByTgId(int $tg_id) {
@@ -55,5 +60,16 @@ class Model {
         
         return $user;
     }
+
+    public function topicCreate(string $title, int $chat_id, int $topic_id) : topic {
+        
+    }
     
+    public function topicReview(user $user) : DBView {
+        
+    }
+    
+    public function topicNext(user $user) : topic {
+        
+    }
 }

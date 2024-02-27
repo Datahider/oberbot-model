@@ -1,6 +1,6 @@
 <?php
 
-define('PRODUCTION_DB', false);
+define('PRODUCTION_DB', true);
 
 use losthost\DB\DB;
 

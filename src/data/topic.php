@@ -6,6 +6,11 @@ use losthost\DB\DBObject;
 
 class topic extends DBObject {
 
+    const STATUS_ANY = -1;
+    const STATUS_NEW = 0;
+    const STATUS_IN_PROGRESS = 1;
+    const STATUS_CLOSED = 111;
+    
     const METADATA = [
         'id' => 'BIGINT(20) NOT NULL AUTO_INCREMENT',
         'chat_id' => 'BIGINT(20) NOT NULL',
@@ -24,5 +29,15 @@ class topic extends DBObject {
     
     public static function tableName() {
         return DB::$prefix. 'topics';
+    }
+    
+    static public function newFromTg(int $chat_id, int $topic_id, string $title) {
+        
+        $new = new topic(['chat_id' => $chat_id, 'topic_id' => $topic_id, 'topic_title' => $title]);
+        $new->write();
+        $new->topic_title = "$title - #$new->id";
+        $new->write();
+        
+        return $new;
     }
 }
