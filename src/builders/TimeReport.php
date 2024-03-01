@@ -32,7 +32,6 @@ class TimeReport extends AbstractBuilder {
                 (:project = 'any' OR project = :project)
                 AND end_time >= :period_start
                 AND start_time <= :period_end
-                AND comment <> 'stopped as you trying to start started timer'
             GROUP BY 
                 project,
                 object,
