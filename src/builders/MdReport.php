@@ -50,7 +50,7 @@ class MdReport extends AbstractBuilder {
                         SELECT chat_group.chat_id FROM [chat_groups] AS chat_group WHERE ? = 'all' OR chat_group.chat_group = ?
                     )
             ORDER BY
-                is_task, status, is_urgent, chat_title
+                is_task, status, is_urgent DESC, chat_title
             FIN;
     }
 }
