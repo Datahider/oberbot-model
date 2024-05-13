@@ -50,6 +50,7 @@ class MdReport extends AbstractBuilder {
                 topic.is_urgent AS is_urgent,
                 topic.topic_title AS topic_title,
                 topic.topic_id AS topic_id,
+                topic.id AS id,
                 topic.wait_for AS wait_for,
                 topic.wait_till AS wait_till
             FROM 
@@ -61,14 +62,14 @@ class MdReport extends AbstractBuilder {
                         SELECT chat_group.chat_id FROM [chat_groups] AS chat_group WHERE ? = 'all' OR chat_group.chat_group = ?
                     );
         
-            CREATE TEMPORARY TABLE vt_t2 SELECT topic_id FROM vt_topics;
+            CREATE TEMPORARY TABLE vt_t2 SELECT id FROM vt_topics;
         
             SELECT 
                 *
             FROM 
                 vt_topics
             WHERE 
-                wait_for NOT IN (SELECT topic_id FROM vt_t2)
+                (wait_for IS NULL OR wait_for NOT IN (SELECT id FROM vt_t2))
                 AND (wait_till IS NULL OR wait_till < NOW())
             ORDER BY
                 is_task, status, is_urgent DESC, chat_title;
