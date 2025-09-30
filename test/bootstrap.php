@@ -1,8 +1,9 @@
 <?php
 
-define('PRODUCTION_DB', true);
+define('PRODUCTION_DB', false);
 
 use losthost\DB\DB;
+use losthost\OberbotModel\data\user;
 
 require_once '../vendor/autoload.php';
 
@@ -26,3 +27,4 @@ if (!PRODUCTION_DB) {
     DB::dropAllTables(true, true);
 }
 
+user::initDataStructure();

@@ -17,4 +17,8 @@ class user extends DBObject {
         'UNIQUE INDEX TG_ID' => 'tg_id',
         'UNIQUE INDEX LOGIN' => 'login'
     ];
+    
+    static public function newFromTg(int $tg_id, string $first_name, string $last_name, ) {
+        
+    }
 }

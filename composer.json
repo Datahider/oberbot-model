@@ -9,7 +9,8 @@
         }
     ],
     "require": {
-        "losthost/db": "^3"
+        "losthost/db": "^3",
+        "losthost/time-tracker": "^1.0.3"
     },
     "require-dev": {
         "phpunit/phpunit": "10.5.10"

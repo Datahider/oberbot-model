@@ -3,6 +3,11 @@ namespace losthost\OberbotModel\data;
 
 use losthost\DB\DB;
 use losthost\DB\DBObject;
+use losthost\DB\DBList;
+use losthost\OberbotModel\data\user;
+use losthost\OberbotModel\data\topic_user;
+use losthost\OberbotModel\data\topic_admin;
+use losthost\timetracker\Timer;
 
 class topic extends DBObject {
 
@@ -33,11 +38,63 @@ class topic extends DBObject {
     
     static public function newFromTg(int $chat_id, int $topic_id, string $title) {
         
-        $new = new topic(['chat_id' => $chat_id, 'topic_id' => $topic_id, 'topic_title' => $title]);
-        $new->write();
-        $new->topic_title = "$title - #$new->id";
-        $new->write();
-        
+        $new = new topic(['chat_id' => $chat_id, 'topic_id' => $topic_id, 'topic_title' => $title], true);
+        if ($new->isNew()) {
+            DB::beginTransaction();
+            $new->write();
+            $new->topic_title = "$title - #$new->id";
+            $new->write();
+            DB::commit();
+        } else {
+            throw new \Exception('This topic already exists.');
+        }
         return $new;
+    }
+    
+    public function getCustomers() : array {
+        
+        $users = new DBList(user::class, 'id IN (SELECT user_id FROM [topic_users] WHERE topic_number = ?)', [$this->id]);
+        return $users->asArray();
+    }
+
+    public function getPerformers() : array {
+        
+        $users = new DBList(user::class, 'id IN (SELECT user_id FROM [topic_admins] WHERE topic_number = ?)', [$this->id]);
+        return $users->asArray();
+    }
+    
+    public function addCustomer(user $user) : bool {
+
+        $topic_customer = new topic_user(['topic_number' => $this->id, 'user_id' => $user->id], true);
+        if ($topic_customer->isNew()) {
+            $topic_customer->write();
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function addPerformer(user $user) : bool {
+        
+        $topic_performer = new topic_admin(['topic_number' => $this->id, 'user_id' => $user->id], true);
+        if ($topic_performer->isNew()) {
+            $topic_performer->write();
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function startTimer(user $user) {
+        $timer = new Timer($user->id);
+        if ($timer->isStarted()) {
+            $timer->stop("Stopped by starting timer for ticket #$this->id");
+        }
+        $timer->start($this->id, $this->chat_id);
+    }
+    
+    public function stopTimer(user $user) {
+        $timer = new Timer($user->id);
+        $timer->stop();
     }
 }

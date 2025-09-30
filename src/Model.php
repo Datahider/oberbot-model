@@ -36,6 +36,7 @@ class Model {
         
         return $user;
     }
+    
     public function userCreate(?string $name=null, ?int $tg_id=null, ?string $login=null, ?string $password=null) {
         
         $existing = new DBList(user::class, ':login IS NOT NULL AND login = :login OR :tg_id IS NOT NULL AND tg_id = :tg_id', ['login' => $login, 'tg_id' => $tg_id]);
@@ -61,10 +62,6 @@ class Model {
         return $user;
     }
 
-    public function topicCreate(string $title, int $chat_id, int $topic_id) : topic {
-        
-    }
-    
     public function topicReview(user $user) : DBView {
         
     }
